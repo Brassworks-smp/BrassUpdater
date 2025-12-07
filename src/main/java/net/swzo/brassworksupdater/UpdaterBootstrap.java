@@ -24,7 +24,7 @@ public class UpdaterBootstrap {
         try {
             Path tempDir = Files.createTempDirectory("bw-updater");
             Path updaterJar = tempDir.resolve("brassworks-updater-bootstrap.jar");
-
+            String javaBin = Path.of(System.getProperty("java.home"), "bin", "java").toString();
             boolean useDev = Boolean.parseBoolean(System.getProperty(DEV_PROPERTY, "false"));
             String updateUrl = useDev ? DEV_URL : System.getProperty(URL_PROPERTY, DEFAULT_URL);
 
@@ -36,7 +36,7 @@ public class UpdaterBootstrap {
             }
             BrassworksUpdater.LOGGER.info("[BrassUpdater] Bootstrapper extracted to " + updaterJar);
 
-            ProcessBuilder pb = new ProcessBuilder("java", "-jar", updaterJar.toString(), updateUrl, "-g")
+            ProcessBuilder pb = new ProcessBuilder(javaBin, "-jar", updaterJar.toString(), updateUrl, "-g")
                     .redirectErrorStream(true);
 
             Process process = pb.start();
